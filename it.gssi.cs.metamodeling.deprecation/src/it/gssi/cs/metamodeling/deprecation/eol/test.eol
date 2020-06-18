@@ -1,0 +1,1 @@
+MM!EClass.all.collect(c|c.eAnnotations).println();

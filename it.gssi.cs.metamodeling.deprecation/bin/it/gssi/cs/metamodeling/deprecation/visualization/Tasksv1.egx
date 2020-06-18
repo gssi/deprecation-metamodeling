@@ -1,0 +1,19 @@
+rule Tasks2Dot 
+	transform s : tasksv1::TasksModel {
+	
+	parameters { 
+		
+		return Map {
+			"TaskModel" = s.author.isDefined() ? "TaskModel" : "TaskModel",
+			"path" = Sequence{s.author.isDefined() ? "TaskModel("+s.author+")" : "TaskModel"},
+			"icon" = "diagram-ff0000",
+			"format" = "graphviz-dot"
+		};
+	}
+	
+	template : "Tasksv1.egl"
+	
+}
+
+
+

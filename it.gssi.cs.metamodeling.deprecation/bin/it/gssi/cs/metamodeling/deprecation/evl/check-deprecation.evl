@@ -1,0 +1,51 @@
+pre{
+var deprecated_eclasses=MM!EClass.all.select(c| c.eAnnotations.select(ea|ea.source="deprecated").size()>0);
+var deprecated_features=MM!EStructuralFeature.all.select(r| r.eAnnotations.select(ea|ea.source="deprecated").size()>0);
+//deprecated_features.println();
+}
+
+context MM!EClass {
+	
+	critique existing_instances {
+		guard: not self.isAbstract
+		check :   not self.hasInstances()
+		
+		message : 'The following deprecated metaclass has instances: '+ self.name
+		
+	}
+	
+}
+
+context MM!EStructuralFeature {
+	
+	critique existing_slots {
+		
+		check :   not self.hasSlots()
+		
+		message : 'The following deprecated feature is still in use: '+ self.name
+		
+	}
+	
+}
+
+
+operation  MM!EClass hasInstances(){
+	
+return ((m.getAllOfType(self.name).size()>0) and deprecated_eclasses.includes(self));
+
+
+}
+
+operation  MM!EStructuralFeature hasSlots(){
+
+	
+	if(deprecated_features.includes(self)){
+		var instances_to_check=m.getAllOfKind(self.eContainer.name);
+	
+		return  instances_to_check.collect(i|not i.eGet(i.eClass().getEStructuralFeature(self.name)).isDefined()).flatten().isEmpty();
+			
+	} 
+	
+	return false;
+
+}

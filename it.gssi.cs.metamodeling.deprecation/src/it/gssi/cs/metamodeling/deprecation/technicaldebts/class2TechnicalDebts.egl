@@ -1,0 +1,345 @@
+[% import "technicaldebts.eol";
+var main = c;
+var classes = getVisibleClasses();
+
+%]
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+
+<title>Modeling view </title>
+
+<link rel="stylesheet" type="text/css" href="[%=getFile("css/joint.css")%]" />
+<link rel="stylesheet" type="text/css" href="[%=getFile("css/ecorecd.css")%]" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+</head>
+<body>
+
+<div class="row">
+<div class="col-md-12">
+<b>Metamodel Overview</b>
+	<div id="paper"></div>
+	</div></div>
+	<hr>
+	<div class="row">
+	<div class="col-md-6">
+	<b>Instances View</b>
+	<ul style="list-style-type:none">
+	<li>Nr. Instances of [%=c.name%]: [%=c.getNrInstances()%]</li>
+	<li>Nr. Deprecated Instances: [%=c.getNrInstancesDeprecated()%]</li>
+		<li>Nr. of total Instances: [%=getNrInstances()%]</li>
+		<li>Nr. of deprecated slots in use: [%=c.getNrSlotsDeprecated()%]</li>
+	</ul>
+	</div>
+		<div class="col-md-6">
+	
+	<canvas id="myChart" width="100%" ></canvas>
+	</div>
+</div>
+
+	<script src="[%=getFile("lib/jquery.js")%]"></script>
+	<script src="[%=getFile("lib/lodash.js")%]"></script>
+	<script src="[%=getFile("lib/backbone.js")%]"></script>
+	<script src="[%=getFile("lib/dagre.js")%]"></script>
+	<script src="[%=getFile("lib/joint.js")%]"></script>
+	<script src="[%=getFile("lib/ecore.js")%]"></script>
+
+<script>
+var graph = new joint.dia.Graph();
+
+		var paper = ecore.createClassDiagram();
+
+		var classes = {};
+		var links = {};
+
+		// for greater performance, the diagram is not updated
+		//   until every element has been created and positioned
+		paper.freeze();
+
+
+	[** First, add all classes to the diagram **]
+		[%for (c in classes) {%]
+			[** Create a node for the class **]
+			classes["[%=c.getNodeName()%]"] = new ecore.EClass({
+				name : '[%= c.name %]',
+				attributes : [[%= c.getFeatures() %]],
+			});
+			[%if (c == main) {%]
+				classes["[%=c.getNodeName()%]"].setFillColor("#c8f0a1");
+			[%}%]
+			[%for (df in c.eStructuralFeatures.select(sf|sf.eAnnotations.source.contains("deprecated"))) { %]
+				classes["[%=df.eContainer.getNodeName()%]"].setFillColor("rgba(228, 37, 12, 0.74)");
+				docdf = new ecore.Documentation();
+					docdf.setText("Contains deprecated features: [%=df.name%]");
+					
+					docdf.addTo(graph);
+					docdfName = "[%=df.eContainer.getNodeName() + "_doc"%]";
+					links[docdfName] = docdf.createLinkFrom(classes.[%=df.eContainer.getNodeName()%]);
+			[%}%]
+		
+			
+			[%if (c.eAnnotations.source.contains("deprecated")) {%]
+				classes["[%=c.getNodeName()%]"].setFillColor("rgba(228, 37, 12, 0.74)");
+				doc = new ecore.Documentation();
+					doc.setText("Deprecated");
+					
+					doc.addTo(graph);
+					docName = "[%=c.getNodeName() + "_doc"%]";
+					links[docName] = doc.createLinkFrom(classes.[%=c.getNodeName()%]);
+			[%}%]
+		[%}%]
+
+		Object.keys(classes).forEach(function(key) {
+			graph.addCell(classes[key]);
+		});
+		[** Create edges for the supertypes of the class **]
+				[%if (isLayerActive("supertypes")){%]
+				[%for (s in c.eSuperTypes.select(s|classes.includes(s))){%]
+					links["[%=s.getNodeName()%]-isSuperTypeOf-[%=c.getNodeName()%]"] = new ecore.Generalization({
+						source: {
+							id: classes.[%=s.getNodeName()%].id
+						},
+						target: {
+							id: classes.[%=c.getNodeName()%].id
+						}
+					});
+				[%}%]
+				[%}%]
+				
+[* Finally, add the EReferences *]
+		[%for (r in getUnidirectionalReferences()) {%]
+			links.[%=r.getNodeName()%] = new ecore.EReference({
+				source: {
+					id: classes.[%=r.eContainer.getNodeName()%].id
+				},
+				target: {
+					id: classes.[%=r.eType.getNodeName()%].id
+				}
+				[%if (isLayerActive("referenceLabels")){%]
+				,labels: [{
+					attrs: {
+						text: { text: '[%=r.getReferenceLabel()%]' }
+					}
+					,position: {
+						distance: 0.7
+					}
+					}]
+				, labelSize: {width: ecore.util.computeTextWidth('[%=r.getReferenceLabel()%]'), height: 20}
+				[%}%]
+			});
+			links.[%=r.getNodeName()%].attr(ecore.unidirectionalRefAttrs);
+			[% if (r.containment) {%]
+				// append containment attributes
+				links.[%=r.getNodeName()%].attr(ecore.containmentRefAttrs);
+			[%}%]
+		[%}%]
+		[%for (r in getBidirectionalReferences()) {%]
+			links.[%=r.getNodeName()%] = new ecore.EReference({
+				source: {
+					id: classes.[%=r.eContainer.getNodeName()%].id
+				},
+				target: {
+					id: classes.[%=r.eType.getNodeName()%].id
+				}
+				[%if (isLayerActive("referenceLabels")){%]
+				,labels: [
+					{
+						attrs: {
+							text: { text: '[%=r.getReferenceLabel()%]' }
+						}
+						,position: {
+							distance: 0.7
+						}
+					},
+					{
+						attrs: {
+							text: { text: '[%=r.eOpposite.getReferenceLabel()%]' }
+						}
+						,position: {
+							distance: 0.3
+						}
+					}]
+				, labelSize: {width: ecore.util.computeTextWidth('[%=r.getReferenceLabel()%]'), height: 20}
+				[%}%]
+			});
+			[% if (r.containment) {%]
+				// append containment attributes
+				links.[%=r.getNodeName()%].attr(ecore.containmentRefAttrs);
+			[%}%]
+		[%}%]
+Object.keys(links).forEach(function(key) {
+			graph.addCell(links[key]);
+		});
+
+		// automatic layout of the diagram
+		// https://resources.jointjs.com/docs/jointjs/v3.1/joint.html#layout.DirectedGraph
+		joint.layout.DirectedGraph.layout(graph, {
+			// necessary variables for the autolayout
+			dagre: dagre,
+			graphlib: dagre.graphlib,
+			// any additional options would go here (very good options to parametrize in egx)
+			//rankSep: 60, // sep between the ranks (each level of top-bottom, left-right, etc.)
+			//nodeSep: 60, // sep between nodes in a rank
+			//edgeSep: 40,
+			marginX: 5,  // margin with the window borders
+			marginY: 5,  // margin with the window borders
+			setVertices: true, // fix vertices position in nodes
+			setLabels: false, // fix labels position (bad idea with bidirectional references)
+			rankDir: "TB", // "TB" / "BT" / "LR" / "RL"
+			ranker: 'network-simplex' // how to assign ranks to nodes. Others: 'tight-tree' or 'longest-path'
+		});
+		paper.unfreeze();
+		paper.fitToContent();
+
+		// link tools setup
+		Object.keys(links).forEach(function(key) {
+			links[key].initTools(paper);
+		});
+
+		paper.on('link:mouseenter', function (linkView) {
+			linkView.showTools();
+		});
+
+		// sneaky mouse listener, allows moving link anchors in elements
+		paper.on('blank:mouseover', function(linkView) {
+			paper.hideTools();
+		});
+
+
+
+var ctx = document.getElementById('myChart');
+var myChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+    
+    datasets: [{
+    
+        data: [[%=c.getNrInstancesDeprecated()%], [%=getNrInstances()-c.getNrInstancesDeprecated()%]],
+        backgroundColor: [
+						'red',
+						'green']
+    },
+    {
+    
+        data: [[%=c.getNrSlotsDeprecated()%], [%=c.getNrSetSlots()-c.getNrSlotsDeprecated()%]],
+        backgroundColor: [
+						'red',
+						'green']
+    }
+    ],
+
+    // These labels appear in the legend and in the tooltips when hovering different arcs
+        labels: ["Technical Debt", "Total"]
+},
+    options: {
+        circumference: Math.PI,
+        rotation : -Math.PI,
+         title: {
+            display: true,
+            text: 'Technical Debt of instances of [%=c.name%]'
+        }
+    }
+});
+</script>
+[%
+
+operation Any getIcon() {
+	return getImage("icons/" + self.eClass.name + ".gif");
+}
+
+operation getFile(file : String) {
+	return getImage(file);
+}
+
+operation isLayerActive(id : String) {
+	var layer = layers.selectOne(l|l.id = id);
+	if (layer.isDefined()) {
+		return layer.active;
+	}
+	else {
+		return true;
+	}
+}
+operation Any getNodeName() {
+	return "_" + self.name;
+}
+
+operation getVisibleReferences() {
+	var visibleReferences : OrderedSet;
+	var main = c;
+	if (main.isDefined()){
+		visibleReferences.addAll(main.eReferences);
+		visibleReferences.addAll(main.eReferences.eOpposite);
+		visibleReferences.remove(null);
+	}
+	else {
+		visibleReferences.addAll(classes.eReferences.flatten().select(r|classes.includes(r.eType)));
+	}
+	visibleReferences = visibleReferences.reject(r|r.eType = r.eContainer);
+	if (not isLayerActive("derived")) visibleReferences = visibleReferences.reject(r|r.isDerived);
+	return visibleReferences;
+}
+operation Any getFormattedFeature() {
+	var label = self.name;
+	if (self.isDerived()) label = "/" + label;
+	if (self.eType.isDefined()) label += " : " + self.eType.name;
+	if (self.eAnnotations.source.contains("deprecated")) label += " **deprecated**";
+	if (self.isMany) label += "["+"*"+"]";
+	return "'" + label + "'";
+}
+operation getUnidirectionalReferences() {
+	var bidirectionalReferences = getBidirectionalReferences();
+	return getVisibleReferences().excludingAll(bidirectionalReferences).
+		excludingAll(bidirectionalReferences.eOpposite);
+}
+
+operation getBidirectionalReferences() {
+	var references = getVisibleReferences();
+	return references.select(r|r.eOpposite.isDefined() and references.indexOf(r) < references.indexOf(r.eOpposite));
+}
+operation Any getFeatures() {
+	var features = self.eAllStructuralFeatures;
+
+	if (not isLayerActive("inherited")) features = self.eStructuralFeatures;
+	if (not isLayerActive("derived")) features = features.reject(f|f.isDerived);
+
+	if (self.eSuperTypes.includes(main)) features = features.excludingAll(main.eAllStructuralFeatures);
+
+	return features.collect(f | f.getFormattedFeature()).concat(", ");
+}
+operation getVisibleClasses() {
+	var main = c;
+	if (main.isDefined()) {
+		var classes : OrderedSet;
+		classes.add(main);
+		if (isLayerActive("supertypes")) classes.addAll(main.eSuperTypes); // All its supertypes
+		if (isLayerActive("subtypes")) classes.addAll(EClass.all.select(o|o.eSuperTypes.includes(main))); // All its subtypes
+		classes.addAll(getVisibleReferences().eType);
+		return classes;
+	}
+	else {
+		return c;
+	}
+}
+operation Any getReferenceLabel() {
+	var label = self.name;
+	if (self.isDerived()) label = "/" + label;
+	// if (self.eType.isDefined()) label += " : " + self.eType.name;
+	if (self.isMany()) {
+		label += " [";
+		if (self.isRequired()) {
+			label += "1..";
+		}
+		else {
+			label += "0..";
+		}
+		label += "*" + "]";
+	}
+	return label;
+}
+%]

@@ -1,0 +1,91 @@
+[% import "technicaldebts.eol";%]
+
+<html>
+<head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+<div class="row">
+<div class="col-md-8">
+
+
+[%
+var allmc=allMetaclasses().select(c|M.allInstances().eClass.contains(c)).sortBy(c|c.hasInstances());
+var numbersdeprecated= allmc.collect(c|c.hasInstances());
+var numernondeprecated=allmc.collect(c|c.getNrInstances() - c.hasInstances()); %]
+
+<canvas id="myRadarChart" width="100%" ></canvas>
+
+</div>
+<div class="col-md-4">
+<h5>Technical Debt Ratio: [%=getNrInstancesDeprecated()*100/getNrInstances()%]%</h5>
+
+<canvas id="myChart" width="100%" ></canvas>
+</div>
+</div>
+
+
+<script>
+var ctxradar = document.getElementById('myRadarChart');
+
+var myRadarChart = new Chart(ctxradar, {
+    type: 'radar',
+    data: {
+    labels: ['[%=allmc.name.concat("','")%]'],
+    datasets: [{
+    label: 'Technical Debt',
+        data: [[%=numbersdeprecated.concat(',')%]],
+        backgroundColor: [
+						'rgba(192, 60, 48, 0.88)']
+    },
+    {label: 'Correct Modeling',
+        data: [[%=numernondeprecated.concat(',')%]],
+        backgroundColor: [
+						
+						'rgba(55, 192, 48, 0.63)']
+    }
+    ]
+}
+});
+
+var ctx = document.getElementById('myChart');
+var myChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+    
+    datasets: [{
+    
+        data: [[%=getNrInstancesDeprecated()%], [%=getNrInstances()-getNrInstancesDeprecated()%]],
+        backgroundColor: [
+						'red',
+						'green']
+    },
+    {
+    
+        data: [[%=getSlotsDeprecated().sum()%], [%=getNrSetSlots()-getSlotsDeprecated().sum()%]],
+        backgroundColor: [
+						'red',
+						'green']
+    }
+    ],
+
+    // These labels appear in the legend and in the tooltips when hovering different arcs
+        labels: ["Technical Debt", "Total"]
+},
+    options: {
+        circumference: Math.PI,
+        rotation : -Math.PI,
+         title: {
+            display: true,
+            text: 'Total Technical Debt of the Model'
+        }
+    }
+});
+</script>
+
+</body>
+</html>

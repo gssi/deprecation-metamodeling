@@ -1,0 +1,42 @@
+import "technicaldebts.eol";
+
+rule Graphical {
+	
+	parameters : Map {
+		
+		"format" = "html",
+		"path" = List{"Model", "Overall Model"},
+		"icon" = "barchart"
+	}
+	
+	template: "model2TechnicalDebts.egl"
+	
+}
+
+rule Class 
+	
+	transform c : EClass in: allMetaclasses() {
+	
+	parameters {
+		
+		return Map{
+			"mainClassName" = c.name,
+			"classNames" = Sequence{},
+			"format" = "html",
+			"path" = Sequence{"Model", "Classes", c.name},
+			"icon" = "diagram-fffbd7",
+			"layers" = Sequence {
+				Map {"id"="documentation", "title"="Documentation"},
+				Map {"id"="constraints", "title"="Constraints"},
+				Map {"id"="referenceLabels", "title"="Reference labels", "active"=false},
+				Map {"id"="subtypes", "title"="Subtypes", "active"=false},
+				Map {"id"="supertypes", "title"="Supertypes"},
+				Map {"id"="derived", "title"="Derived features", "active"=false},
+				Map {"id"="inherited", "title"="Inherited features", "active"=false}
+			}
+		};
+	}
+	
+	template: "class2TechnicalDebts.egl"
+	
+}

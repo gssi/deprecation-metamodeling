@@ -1,0 +1,138 @@
+
+operation allMetaclasses(): Set{
+return M.allInstances().eClass.ePackage.first.eClassifiers.select(c|M.isInstantiable(c.name));
+}
+
+operation Any hasInstances(): Integer{
+
+var isDeprecated=false;
+
+
+ isDeprecated =  not self.eAnnotations.select(ea|ea.source="deprecated").isEmpty();
+
+if(isDeprecated){
+	return M.getAllOfType(self.name).size();
+}else{
+	return 0;
+}
+return 0;
+
+}
+
+
+
+operation getNrInstancesDeprecated(): Integer{
+	var deprecated_i=0;
+	for (i in M.allInstances()) { 
+		var isDeprecated=  not i.eClass().eAnnotations.select(ea|ea.source="deprecated").isEmpty();
+
+		if(isDeprecated){
+			deprecated_i++;
+		}
+	}
+	return deprecated_i;
+}
+
+operation Any getNrInstancesDeprecated(): Integer{
+	var deprecated_i=0;
+	var isDeprecated=  not self.eAnnotations.select(ea|ea.source="deprecated").isEmpty();
+	for (i in M.getAllOfType(self.name)) { 
+		
+		if(isDeprecated){
+			deprecated_i++;
+		}
+	}
+	return deprecated_i;
+}
+
+operation Any getNrSlotsDeprecated(): Integer{
+	var deprecated_slots=0;
+	
+	for (i in M.getAllOfType(c.name)) { 
+	var c = self;
+	for (f in c.eAllStructuralFeatures) { 
+	var deprecated_f=not f.eAnnotations.select(ea|ea.source="deprecated").isEmpty();
+			if(deprecated_f and i.eGet(i.eClass().getEStructuralFeature(f.name)).isDefined()){
+			deprecated_slots++;
+			}		
+		}
+	}
+	return deprecated_slots;
+}
+
+operation getSlotsDeprecated(): Set{
+	var deprecated_slots=Set{};
+	
+	for (i in M.allInstances()) { 
+	var c = i.eClass();
+	for (f in c.eAllStructuralFeatures) { 
+	var deprecated_f=not f.eAnnotations.select(ea|ea.source="deprecated").isEmpty();
+			if(deprecated_f and  i.eGet(i.eClass().getEStructuralFeature(f.name)).isDefined()){
+			deprecated_slots.add(i.eGet(i.eClass().getEStructuralFeature(f.name)).size());
+			}		
+		}
+	}
+	return deprecated_slots;
+}
+
+operation getNrSlotsDeprecated(): Integer{
+	var deprecated_slots=0;
+	
+	for (i in M.allInstances()) { 
+	var c = i.eClass();
+	for (f in c.eAllStructuralFeatures) { 
+	var deprecated_f=not f.eAnnotations.select(ea|ea.source="deprecated").isEmpty();
+			if(deprecated_f and i.eGet(i.eClass().getEStructuralFeature(f.name)).isDefined()){
+			deprecated_slots++;
+			}		
+		}
+	}
+	return deprecated_slots;
+}
+
+operation  Any hasSlots(): Integer{
+
+var isDeprecated= not self.eAnnotations.select(ea|ea.source="deprecated").isEmpty();
+
+var instances_to_check=M.getAllOfKind(self.eContainer.name);
+
+if(isDeprecated){
+	return instances_to_check.collect(i|i.eGet(i.eClass().getEStructuralFeature(self.name)).isDefined()).select(d|d=true).size();
+}
+
+return 0;
+}
+
+operation Any getNrInstances(): Integer{
+	return M.getAllOfType(self.name).size();
+}
+
+operation getNrInstances(): Integer{
+	return M.allInstances().size();
+}
+
+operation getNrSetSlots(): Integer{
+var sum=0;
+for (i in M.allInstances()) { 
+	var c=i.eClass();
+	for (f in c.eAllStructuralFeatures) { 
+		if(i.eGet(i.eClass().getEStructuralFeature(f.name)).isDefined()){
+			sum++;
+		}
+	}
+}
+return sum;	
+}
+
+operation Any getNrSetSlots(): Integer{
+var sum=0;
+for (i in M.getAllOfType(c.name)) { 
+	
+	for (f in c.eAllStructuralFeatures) { 
+		if(i.eGet(i.eClass().getEStructuralFeature(f.name)).isDefined()){
+			sum++;
+		}
+	}
+}
+return sum;	
+}

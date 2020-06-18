@@ -1,0 +1,51 @@
+[%var projects = s.projects;
+var categories= s.categories;
+%]
+
+digraph G {
+	rankdir = TB;
+	 compound=true;
+	[* Default fonts for edges and nodes *]
+	node[fontname=Tahoma, fontsize=10]
+	edge[fontname=Tahoma, fontsize=10]
+	
+	[%for (c in categories){%]
+	 "[%=c.name%]" [shape=none, margin=0, label=<<table cellspacing='1' cellborder='0' border="0" cellpadding="0"><tr><td align="right"><img src="[%=getIcon('category')%]"/></td><td align="left" valign="middle">[%=c.name%]</td></tr></table>>];
+	[%}%]
+	
+	
+	[% var i=0;
+	for (p in projects){%]
+	subgraph cluster_[%=i%]{
+	
+	label = <<table cellspacing='1' cellborder='0' border="0" cellpadding="0"><tr><td align="right"><img src="[%if(p.isTypeOf(tasksv1::Project)){%][%=getIcon('project')%][%}else{%][%=getIcon('TeamProject')%][%}%]"/></td><td align="left" valign="middle">[%=p.name%]</td></tr></table>>;
+    color=darkgray;
+	node[fontname=Tahoma, fontsize=10]
+	edge[fontname=Tahoma, fontsize=10]
+	[%for (t in p.tasks){%]
+	[%if(t.isTypeOf(tasksv1::SimpleTask)){%]
+	"[%=t.name%]" [shape=none, margin=0, label=<<table cellspacing='1' cellborder='0' border="0" cellpadding="0"><tr><td align="right"><img src="[%if(t.done<>null and t.done){%][%=getIcon('task-green')%][%}else{%][%=getIcon('task-white')%][%}%]"/></td><td align="left" valign="middle">[%=t.name%]</td></tr></table>>];
+	[%}else{%]
+	subgraph cluster_[%=t.name%]_[%=i%]{
+	label = [%=t.name%];
+    color=darkgray;
+	node[fontname=Tahoma, fontsize=10]
+	edge[fontname=Tahoma, fontsize=10]
+	[%for (st in t.subtasks){%]
+	"[%=st.name%]" [shape=none, margin=0, label=<<table cellspacing='1' cellborder='0' border="0" cellpadding="0"><tr><td align="right"><img src="[%if(st.done<>null and st.done){%][%=getIcon('task-green')%][%}else{%][%=getIcon('task-white')%][%}%]"/></td><td align="left" valign="middle">[%=st.name%]</td></tr></table>>];
+	[%}%]
+	}
+	[%}
+	}%]
+	}
+	[%if(p.category.isDefined()){%]"[%if(p.tasks.first.isTypeOf(tasksv1::SimpleTask)){%][%=p.tasks.first.name%] [%}else{%][%=p.tasks.first.subtasks.first.name%][%}%]"->"[%=p.category.name%]"[%}%]
+	[% i++;
+	}%]
+	
+	
+	}
+[%
+operation getIcon(icon : String) {
+	return getImage("icons/" + icon + ".png");
+}
+%]	

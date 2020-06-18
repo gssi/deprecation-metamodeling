@@ -1,0 +1,25 @@
+<?nsuri cs.gssi.it/tasks_v12?> 
+<?render-egx ../technicaldebts/model2TechnicalDebts.egx?>
+ 
+<TasksModel author="Ludovico">                  
+  <Category name="EU Projects"/>                   
+   <Category name="Papers"/>                         
+  <Project name="RASTA" category="EU Projects">    
+  <SimpleTask name="Deliverable" done="false"/>  
+  <SimpleTask name="Project Draft" done="true"/> 
+  <SimpleTask name="GANTT" done="true"/>                                 
+  </Project>                                                                   
+   <Project name="CUIM" category="EU Projects">              
+  <SimpleTask name="Budget" done="true"/> 
+  <SimpleTask name="Partnership" done="false"/>           
+  </Project>       
+  <Project name="MODELS" category="Papers" >    
+  <SimpleTask name="Set up the repository">
+  <Attachment type="json" externallink="http://mywebsite.com/api/get" />
+  </SimpleTask>        
+  <CompositeTask name="paper">                   
+  <SimpleTask name="Draft paper" />    
+   <SimpleTask name="Write Evaluation" />            
+  </CompositeTask>                                
+  </Project>                          
+</TasksModel>                                                   

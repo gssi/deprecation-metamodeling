@@ -1,0 +1,46 @@
+@namespace(uri="cs.gssi.it/tasks_v1", prefix="tasksv1")
+package tasksv1;
+
+class TasksModel {
+	attr String author;
+	val Project[*]#model projects;
+	val Category[*] categories;
+}
+
+abstract class Task {
+	attr String name;
+	attr Boolean done;
+	val Attachment[*] attachments;
+}
+
+class Project {
+	attr String name;
+	ref Category[1] category;
+	
+	ref TasksModel[1]#projects model;
+	val Task[*] tasks;
+}
+
+
+class Category{
+	attr String name;
+	attr int _id;
+}
+
+
+class SimpleTask extends Task {
+}
+
+class CompositeTask extends Task {
+	val SimpleTask[*] subtasks;
+}
+
+class Attachment{
+attr String	externallink;
+attr String sitename;
+attr String filename;
+attr String size;
+attr String type;
+	
+}
+
