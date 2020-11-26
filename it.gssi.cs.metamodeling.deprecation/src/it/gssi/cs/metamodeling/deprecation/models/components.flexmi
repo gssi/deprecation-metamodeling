@@ -1,0 +1,8 @@
+<?nsuri http://cs.gssi.it/sigcomp/v2?> 
+<?render-egx ../technicaldebts/model2TechnicalDebts.egx?>
+  
+<ComponentModel>
+<Signature id="s" inPort="p1">
+</Signature>
+<InPort id="p1"></InPort>
+</ComponentModel>

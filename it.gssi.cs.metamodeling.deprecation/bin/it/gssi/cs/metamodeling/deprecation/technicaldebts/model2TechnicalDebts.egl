@@ -1,4 +1,7 @@
-[% import "technicaldebts.eol";%]
+[% import "technicaldebts.eol"; 
+var emfTool : new Native("org.eclipse.epsilon.emc.emf.tools.EmfTool");
+
+%]
 
 <html>
 <head>
@@ -9,25 +12,33 @@
 
 <body>
 
-<div class="row">
-<div class="col-md-8">
+
 
 
 [%
-var allmc=allMetaclasses().select(c|M.allInstances().eClass.contains(c)).sortBy(c|c.hasInstances());
-var numbersdeprecated= allmc.collect(c|c.hasInstances());
-var numernondeprecated=allmc.collect(c|c.getNrInstances() - c.hasInstances()); %]
+var allmc=allMetaclasses();
+//.select(c|M.allInstances().eClass.contains(c)).sortBy(c|c.hasInstances());
+var deprecated= allmc.collect(c|c.getDeprecated());
+var nondeprecated = allmc.collect(c|M.allInstances().select(i|i.eClass.sameObj(c)).size() - c.getDeprecated() );
+var numberOfInstances = M.allInstances().size();
+
+var deprecatedSlots = M.allInstances().collect(i|i.getNrSlotsDeprecatedForInstance());
+var numberOfSlots = M.allInstances().collect(i|i.getNrFilledSlots()).sum();
+var tdratio = ((deprecated.sum() * 100)/ numberOfInstances).round();
+%]
+<div class="row">
+
+<div class="col-md-8">
 
 <canvas id="myRadarChart" width="100%" ></canvas>
-
 </div>
-<div class="col-md-4">
-<h5>Technical Debt Ratio: [%=getNrInstancesDeprecated()*100/getNrInstances()%]%</h5>
 
+<div class="col-md-4">
+<h5>Technical Debt Ratio: <div class="btn btn-[%=(tdratio > 50 ?'danger':'info')%]"> [%= tdratio %]%</div></h5>
 <canvas id="myChart" width="100%" ></canvas>
 </div>
-</div>
 
+</div>
 
 <script>
 var ctxradar = document.getElementById('myRadarChart');
@@ -35,15 +46,15 @@ var ctxradar = document.getElementById('myRadarChart');
 var myRadarChart = new Chart(ctxradar, {
     type: 'radar',
     data: {
-    labels: ['[%=allmc.name.concat("','")%]'],
+    labels: ['[%=allmc.collect(c|c.name.concat(" (").concat(c.ePackage.name).concat(")")).concat("','")%]'],
     datasets: [{
     label: 'Technical Debt',
-        data: [[%=numbersdeprecated.concat(',')%]],
+        data: [[%=deprecated.concat(',')%]],
         backgroundColor: [
 						'rgba(192, 60, 48, 0.88)']
     },
     {label: 'Correct Modeling',
-        data: [[%=numernondeprecated.concat(',')%]],
+        data: [[%=nondeprecated.concat(',')%]],
         backgroundColor: [
 						
 						'rgba(55, 192, 48, 0.63)']
@@ -59,14 +70,14 @@ var myChart = new Chart(ctx, {
     
     datasets: [{
     
-        data: [[%=getNrInstancesDeprecated()%], [%=getNrInstances()-getNrInstancesDeprecated()%]],
+        data: [[%=deprecated.sum()%], [%=numberOfInstances - deprecated.sum()%]],
         backgroundColor: [
 						'red',
 						'green']
     },
     {
     
-        data: [[%=getSlotsDeprecated().sum()%], [%=getNrSetSlots()-getSlotsDeprecated().sum()%]],
+        data: [[%=deprecatedSlots.sum()%], [%=numberOfSlots - deprecatedSlots.sum()%]],
         backgroundColor: [
 						'red',
 						'green']
@@ -85,7 +96,11 @@ var myChart = new Chart(ctx, {
         }
     }
 });
+
+
 </script>
+
+
 
 </body>
 </html>

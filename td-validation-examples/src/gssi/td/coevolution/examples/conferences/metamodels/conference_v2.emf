@@ -1,0 +1,42 @@
+@namespace(uri="conference.com/v2", prefix="conference")
+package conferencev2;
+
+class ConfManager {
+	val Conference[*] conferences;
+}
+
+class Conference {
+	attr String acronym;
+	attr String venue;
+	attr String fullname;
+	attr EDate date;
+	val Submission[*] submissions;
+	val Member[*] members;
+}
+
+abstract class Member {
+	attr String name;
+	attr String username;
+}
+
+class Author extends Member {
+}
+
+class PcMember extends Member {
+	attr MemberType[1] type;
+	ref Submission[*]#reviewers reviews;
+}
+
+enum MemberType{
+	CHAIR;
+	Ordinary;
+	
+}
+
+class Submission {
+	ref Author[*] authors;
+	attr String title;
+	attr Integer length;
+	ref PcMember[2]#reviews reviewers;
+}
+

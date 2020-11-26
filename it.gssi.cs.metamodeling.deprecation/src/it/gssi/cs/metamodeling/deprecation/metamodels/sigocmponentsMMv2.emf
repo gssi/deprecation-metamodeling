@@ -1,0 +1,29 @@
+@namespace(uri="http://cs.gssi.it/sigcomp/v2", prefix="sigcomp")
+package sigcomponents_v2;
+
+class ComponentModel {
+
+val Signature[*] signatures;
+val Port[*] ports;
+
+}
+
+class Signature {
+
+ref InPort[*] inPort;
+ref OutPort[*] outPort;
+attr String _id;
+}
+
+abstract class Port {
+attr String _id;
+}
+
+class InPort extends Port{
+	
+}
+
+class OutPort extends Port{
+	
+}
+

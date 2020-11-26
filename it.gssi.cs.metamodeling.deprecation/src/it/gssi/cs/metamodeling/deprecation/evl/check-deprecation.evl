@@ -1,4 +1,8 @@
+import "../technicaldebts/technicaldebts.eol";
+
 pre{
+var emfTool : new Native("org.eclipse.epsilon.emc.emf.tools.EmfTool");
+
 var deprecated_eclasses=MM!EClass.all.select(c| c.eAnnotations.select(ea|ea.source="deprecated").size()>0);
 var deprecated_features=MM!EStructuralFeature.all.select(r| r.eAnnotations.select(ea|ea.source="deprecated").size()>0);
 //deprecated_features.println();
@@ -7,45 +11,33 @@ var deprecated_features=MM!EStructuralFeature.all.select(r| r.eAnnotations.selec
 context MM!EClass {
 	
 	critique existing_instances {
-		guard: not self.isAbstract
-		check :   not self.hasInstances()
+		guard:  not self.select(c|not c.eAnnotations.select(ea|ea.source="deprecated").isEmpty()).isEmpty()
+		check :    self.getDeprecated() = 0.0
 		
-		message : 'The following deprecated metaclass has instances: '+ self.name
 		
+		message : 'The following deprecated metaclass '+ self.name + ' is instantiated ('+ self.getDeprecated()+')'
+		fix {
+		title : "Instances of "+self.name +" should be replaced with instances of "+ self.eAnnotations.select(ea|ea.source="deprecated").first.references.collect(c|c.name+" ("+c.ePackage.name+")")
+		do {
+			self.eAnnotations.select(ea|ea.source="deprecated").first.references.collect(c|c.name+" ("+c.ePackage.name+")").println();
+		}
+	}	
 	}
+	
+	
 	
 }
 
-context MM!EStructuralFeature {
+context MM!EClass {
 	
 	critique existing_slots {
+		guard:  not self.eAllStructuralFeatures.select(f|not f.eAnnotations.select(ea|ea.source="deprecated").isEmpty).isEmpty()
+		check :    self.getDeprecated() = 0.0
 		
-		check :   not self.hasSlots()
 		
-		message : 'The following deprecated feature is still in use: '+ self.name
+		message : 'The following deprecated metaclass '+ self.name + ' uses to deprecated features ('+ self.getDeprecated()+')'
 		
 	}
 	
-}
-
-
-operation  MM!EClass hasInstances(){
 	
-return ((m.getAllOfType(self.name).size()>0) and deprecated_eclasses.includes(self));
-
-
-}
-
-operation  MM!EStructuralFeature hasSlots(){
-
-	
-	if(deprecated_features.includes(self)){
-		var instances_to_check=m.getAllOfKind(self.eContainer.name);
-	
-		return  instances_to_check.collect(i|not i.eGet(i.eClass().getEStructuralFeature(self.name)).isDefined()).flatten().isEmpty();
-			
-	} 
-	
-	return false;
-
 }

@@ -13,6 +13,9 @@ rule Graphical {
 	
 }
 
+
+
+
 rule Class 
 	
 	transform c : EClass in: allMetaclasses() {
@@ -23,7 +26,7 @@ rule Class
 			"mainClassName" = c.name,
 			"classNames" = Sequence{},
 			"format" = "html",
-			"path" = Sequence{"Model", "Classes", c.name},
+			"path" = Sequence{"Model", c.ePackage.name, c.name},
 			"icon" = "diagram-fffbd7",
 			"layers" = Sequence {
 				Map {"id"="documentation", "title"="Documentation"},

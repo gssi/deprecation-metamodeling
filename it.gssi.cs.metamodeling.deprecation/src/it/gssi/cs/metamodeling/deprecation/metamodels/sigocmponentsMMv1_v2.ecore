@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="sigcomponenetsv1_v2" nsURI="http://cs.gssi.it/sigcomponenets/v1_v2"
+    nsPrefix="sigcomponenetsv1_v2">
+  <eClassifiers xsi:type="ecore:EClass" name="ComponentModel">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="signatures" upperBound="-1"
+        eType="#//sigcomponents_v1/Signature" containment="true">
+      <eAnnotations source="deprecated"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ports" upperBound="-1"
+        eType="#//sigcomponents_v1/Port" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="_signatures" upperBound="-1"
+        eType="#//sigcomponents_v2/Signature" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="_ports" upperBound="-1"
+        eType="#//sigcomponents_v2/Port" containment="true"/>
+  </eClassifiers>
+  <eSubpackages name="sigcomponents_v1" nsURI="http://cs.gssi.it/sigcomp/v1" nsPrefix="sigcomp">
+    <eClassifiers xsi:type="ecore:EClass" name="Port">
+      <eAnnotations source="deprecated"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Signature">
+      <eAnnotations source="deprecated"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="inPort" upperBound="-1"
+          eType="#//sigcomponents_v1/Port"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="outPort" upperBound="-1"
+          eType="#//sigcomponents_v1/Port"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eClassifiers>
+  </eSubpackages>
+  <eSubpackages name="sigcomponents_v2" nsURI="sigcomponents_v2" nsPrefix="sigcomponents_v2">
+    <eClassifiers xsi:type="ecore:EClass" name="Signature">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="inPort" upperBound="-1"
+          eType="#//sigcomponents_v2/InPort"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="outPort" upperBound="-1"
+          eType="#//sigcomponents_v2/OutPort"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Port" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="InPort" eSuperTypes="#//sigcomponents_v2/Port"/>
+    <eClassifiers xsi:type="ecore:EClass" name="OutPort" eSuperTypes="#//sigcomponents_v2/Port"/>
+  </eSubpackages>
+</ecore:EPackage>

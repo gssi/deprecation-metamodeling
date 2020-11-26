@@ -1,6 +1,10 @@
 [% import "technicaldebts.eol";
+var emfTool : new Native("org.eclipse.epsilon.emc.emf.tools.EmfTool");
+
 var main = c;
 var classes = getVisibleClasses();
+var deprecatedSlots = M.allInstances().select(instance|main.sameObj(instance.eClass)).collect(i|i.getNrSlotsDeprecatedForInstance());
+var numberOfSlots = M.allInstances().collect(i|i.getNrFilledSlots()).sum();
 
 %]
 
@@ -20,21 +24,28 @@ var classes = getVisibleClasses();
 </head>
 <body>
 
+
 <div class="row">
 <div class="col-md-12">
+<center>
 <b>Metamodel Overview</b>
-	<div id="paper"></div>
-	</div></div>
+<div id="paper"></div>
+</center>
+</div>
+</div>
 	<hr>
+	<center><b>Instances View</b></center>
 	<div class="row">
+	
 	<div class="col-md-6">
-	<b>Instances View</b>
+	
 	<ul style="list-style-type:none">
-	<li>Nr. Instances of [%=c.name%]: [%=c.getNrInstances()%]</li>
-	<li>Nr. Deprecated Instances: [%=c.getNrInstancesDeprecated()%]</li>
-		<li>Nr. of total Instances: [%=getNrInstances()%]</li>
-		<li>Nr. of deprecated slots in use: [%=c.getNrSlotsDeprecated()%]</li>
-	</ul>
+	<li><div class="btn btn-primary" style="margin:5px">Instances of [%=c.name%]: <span class="badge badge-light">[%=c.getInstances().size()%]<span></div></li>
+	<li><div class="btn btn-primary" style="margin:5px">Deprecated Instances:  <span class="badge badge-light">[%=c.getDeprecated()%]</span></div></li>
+	<li><div class="btn btn-primary" style="margin:5px">Model size:  <span class="badge badge-light">[%=M.allInstances().size()%]</span></div></li>
+	<li><div class="btn btn-primary" style="margin:5px">Deprecated slots in use:  <span class="badge badge-light">[%=deprecatedSlots.size()%]</span></div></li>
+</ul>
+	
 	</div>
 		<div class="col-md-6">
 	
@@ -63,16 +74,16 @@ var graph = new joint.dia.Graph();
 
 
 	[** First, add all classes to the diagram **]
-		[%for (c in classes) {%]
+		[%for (cl in classes) {%]
 			[** Create a node for the class **]
-			classes["[%=c.getNodeName()%]"] = new ecore.EClass({
-				name : '[%= c.name %]',
-				attributes : [[%= c.getFeatures() %]],
+			classes["[%=cl.getNodeName()%]"] = new ecore.EClass({
+				name : '[%= cl.name %]',
+				attributes : [[%= cl.getFeatures() %]],
 			});
-			[%if (c == main) {%]
-				classes["[%=c.getNodeName()%]"].setFillColor("#c8f0a1");
+			[%if (cl == main) {%]
+				classes["[%=cl.getNodeName()%]"].setFillColor("#c8f0a1");
 			[%}%]
-			[%for (df in c.eStructuralFeatures.select(sf|sf.eAnnotations.source.contains("deprecated"))) { %]
+			[%for (df in cl.eStructuralFeatures.select(sf|sf.eAnnotations.source.contains("deprecated"))) { %]
 				classes["[%=df.eContainer.getNodeName()%]"].setFillColor("rgba(228, 37, 12, 0.74)");
 				docdf = new ecore.Documentation();
 					docdf.setText("Contains deprecated features: [%=df.name%]");
@@ -83,14 +94,14 @@ var graph = new joint.dia.Graph();
 			[%}%]
 		
 			
-			[%if (c.eAnnotations.source.contains("deprecated")) {%]
-				classes["[%=c.getNodeName()%]"].setFillColor("rgba(228, 37, 12, 0.74)");
+			[%if (cl.eAnnotations.source.contains("deprecated")) { %]
+				classes["[%=cl.getNodeName()%]"].setFillColor("rgba(228, 37, 12, 0.74)");
 				doc = new ecore.Documentation();
 					doc.setText("Deprecated");
 					
 					doc.addTo(graph);
-					docName = "[%=c.getNodeName() + "_doc"%]";
-					links[docName] = doc.createLinkFrom(classes.[%=c.getNodeName()%]);
+					docName = "[%=cl.getNodeName() + "_doc"%]";
+					links[docName] = doc.createLinkFrom(classes["[%=cl.getNodeName()%]"]);
 			[%}%]
 		[%}%]
 
@@ -172,6 +183,7 @@ var graph = new joint.dia.Graph();
 				links.[%=r.getNodeName()%].attr(ecore.containmentRefAttrs);
 			[%}%]
 		[%}%]
+		
 Object.keys(links).forEach(function(key) {
 			graph.addCell(links[key]);
 		});
@@ -211,7 +223,6 @@ Object.keys(links).forEach(function(key) {
 		});
 
 
-
 var ctx = document.getElementById('myChart');
 var myChart = new Chart(ctx, {
     type: 'doughnut',
@@ -219,14 +230,14 @@ var myChart = new Chart(ctx, {
     
     datasets: [{
     
-        data: [[%=c.getNrInstancesDeprecated()%], [%=getNrInstances()-c.getNrInstancesDeprecated()%]],
+        data: [[%=c.getDeprecated()%], [%= c.getInstances().size() - c.getDeprecated()%]],
         backgroundColor: [
 						'red',
 						'green']
     },
     {
     
-        data: [[%=c.getNrSlotsDeprecated()%], [%=c.getNrSetSlots()-c.getNrSlotsDeprecated()%]],
+        data: [[%=deprecatedSlots.sum() %], [%= numberOfSlots - deprecatedSlots.sum() %]],
         backgroundColor: [
 						'red',
 						'green']
@@ -245,6 +256,8 @@ var myChart = new Chart(ctx, {
         }
     }
 });
+
+
 </script>
 [%
 
@@ -266,7 +279,14 @@ operation isLayerActive(id : String) {
 	}
 }
 operation Any getNodeName() {
-	return "_" + self.name;
+	//return "_" + self.name;
+	var prefix = "_";
+	if(self.isTypeOf(EClass)){
+		prefix = "_"+self.ePackage.name+"_";
+	}else{
+		prefix="_";
+	}
+	return prefix+self.name;
 }
 
 operation getVisibleReferences() {

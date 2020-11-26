@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.3/notation" xmi:id="_oUunQCl-Eeusi45JUlVHOA" type="Ecore" measurementUnit="Pixel">
+  <styles xmi:type="notation:DiagramStyle" xmi:id="_oUunQSl-Eeusi45JUlVHOA"/>
+  <element xmi:type="ecore:EPackage" href="sigocmponentsMMv1_v2.ecore#//sigcomponents_v1"/>
+</notation:Diagram>

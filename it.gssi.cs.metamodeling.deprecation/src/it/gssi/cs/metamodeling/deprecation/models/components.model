@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ASCII"?>
+<sigcomponenetsv1_v2:ComponentModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:sigcomponenetsv1_v2="http://cs.gssi.it/sigcomponenets/v1_v2" xmi:id="_Nfce8CkSEeurXP3VYdv4HQ">
+  <signatures xmi:id="_QeVAACkUEeurXP3VYdv4HQ" inPort="_n9pxMCkUEeurXP3VYdv4HQ" outPort="_q8RecCkUEeurXP3VYdv4HQ" id="s"/>
+  <ports xmi:id="_n9pxMCkUEeurXP3VYdv4HQ" id="p1"/>
+  <ports xmi:id="_q8RecCkUEeurXP3VYdv4HQ" id="p2"/>
+</sigcomponenetsv1_v2:ComponentModel>
