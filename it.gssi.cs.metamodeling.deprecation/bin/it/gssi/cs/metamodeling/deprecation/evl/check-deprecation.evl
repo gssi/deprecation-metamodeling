@@ -5,7 +5,7 @@ var emfTool : new Native("org.eclipse.epsilon.emc.emf.tools.EmfTool");
 
 var deprecated_eclasses=MM!EClass.all.select(c| c.eAnnotations.select(ea|ea.source="deprecated").size()>0);
 var deprecated_features=MM!EStructuralFeature.all.select(r| r.eAnnotations.select(ea|ea.source="deprecated").size()>0);
-//deprecated_features.println();
+
 }
 
 context MM!EClass {

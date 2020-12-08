@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="ASCII"?>
+<compare:Comparison xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compare="http://www.eclipse.org/emf/compare">
+  <matchedResources leftURI="platform:/resource/it.gssi.cs.metamodeling.deprecation/src/it/gssi/cs/metamodeling/deprecation/metamodels/sigocmponentsMMv1.ecore"/>
+  <matchedResources rightURI="platform:/resource/it.gssi.cs.metamodeling.deprecation/src/it/gssi/cs/metamodeling/deprecation/metamodels/sigocmponentsMMv2.ecore"/>
+  <matches>
+    <submatches>
+      <submatches>
+        <left href="platform:/resource/it.gssi.cs.metamodeling.deprecation/src/it/gssi/cs/metamodeling/deprecation/metamodels/sigocmponentsMMv1.ecore#//Signature/_id"/>
+        <right href="platform:/resource/it.gssi.cs.metamodeling.deprecation/src/it/gssi/cs/metamodeling/deprecation/metamodels/sigocmponentsMMv2.ecore#//Signature/_id"/>
+      </submatches>
+      <submatches>
+        <differences xsi:type="compare:ReferenceChange" requiredBy="//@matches.0/@differences.0" kind="CHANGE">
+          <reference href="http://www.eclipse.org/emf/2002/Ecore#//ETypedElement/eType"/>
+          <value href="platform:/resource/it.gssi.cs.metamodeling.deprecation/src/it/gssi/cs/metamodeling/deprecation/metamodels/sigocmponentsMMv1.ecore#//Port"/>
+        </differences>
+        <left href="platform:/resource/it.gssi.cs.metamodeling.deprecation/src/it/gssi/cs/metamodeling/deprecation/metamodels/sigocmponentsMMv1.ecore#//Signature/inPort"/>
+        <right href="platform:/resource/it.gssi.cs.metamodeling.deprecation/src/it/gssi/cs/metamodeling/deprecation/metamodels/sigocmponentsMMv2.ecore#//Signature/inPort"/>
+      </submatches>
+      <submatches>
+        <differences xsi:type="compare:ReferenceChange" requiredBy="//@matches.0/@differences.1" kind="CHANGE">
+          <reference href="http://www.eclipse.org/emf/2002/Ecore#//ETypedElement/eType"/>
+          <value href="platform:/resource/it.gssi.cs.metamodeling.deprecation/src/it/gssi/cs/metamodeling/deprecation/metamodels/sigocmponentsMMv1.ecore#//Port"/>
+        </differences>
+        <left href="platform:/resource/it.gssi.cs.metamodeling.deprecation/src/it/gssi/cs/metamodeling/deprecation/metamodels/sigocmponentsMMv1.ecore#//Signature/outPort"/>
+        <right href="platform:/resource/it.gssi.cs.metamodeling.deprecation/src/it/gssi/cs/metamodeling/deprecation/metamodels/sigocmponentsMMv2.ecore#//Signature/outPort"/>
+      </submatches>
+      <left href="platform:/resource/it.gssi.cs.metamodeling.deprecation/src/it/gssi/cs/metamodeling/deprecation/metamodels/sigocmponentsMMv1.ecore#//Signature"/>
+      <right href="platform:/resource/it.gssi.cs.metamodeling.deprecation/src/it/gssi/cs/metamodeling/deprecation/metamodels/sigocmponentsMMv2.ecore#//Signature"/>
+    </submatches>
+    <submatches>
+      <submatches>
+        <left href="platform:/resource/it.gssi.cs.metamodeling.deprecation/src/it/gssi/cs/metamodeling/deprecation/metamodels/sigocmponentsMMv1.ecore#//ComponentModel/signatures"/>
+        <right href="platform:/resource/it.gssi.cs.metamodeling.deprecation/src/it/gssi/cs/metamodeling/deprecation/metamodels/sigocmponentsMMv2.ecore#//ComponentModel/signatures"/>
+      </submatches>
+      <submatches>
+        <left href="platform:/resource/it.gssi.cs.metamodeling.deprecation/src/it/gssi/cs/metamodeling/deprecation/metamodels/sigocmponentsMMv1.ecore#//ComponentModel/ports"/>
+        <right href="platform:/resource/it.gssi.cs.metamodeling.deprecation/src/it/gssi/cs/metamodeling/deprecation/metamodels/sigocmponentsMMv2.ecore#//ComponentModel/ports"/>
+      </submatches>
+      <left href="platform:/resource/it.gssi.cs.metamodeling.deprecation/src/it/gssi/cs/metamodeling/deprecation/metamodels/sigocmponentsMMv1.ecore#//ComponentModel"/>
+      <right href="platform:/resource/it.gssi.cs.metamodeling.deprecation/src/it/gssi/cs/metamodeling/deprecation/metamodels/sigocmponentsMMv2.ecore#//ComponentModel"/>
+    </submatches>
+    <submatches>
+      <submatches>
+        <left href="platform:/resource/it.gssi.cs.metamodeling.deprecation/src/it/gssi/cs/metamodeling/deprecation/metamodels/sigocmponentsMMv1.ecore#//Port/_id"/>
+        <right href="platform:/resource/it.gssi.cs.metamodeling.deprecation/src/it/gssi/cs/metamodeling/deprecation/metamodels/sigocmponentsMMv2.ecore#//Port/_id"/>
+      </submatches>
+      <differences xsi:type="compare:AttributeChange" kind="CHANGE">
+        <attribute href="http://www.eclipse.org/emf/2002/Ecore#//EClass/abstract"/>
+      </differences>
+      <left href="platform:/resource/it.gssi.cs.metamodeling.deprecation/src/it/gssi/cs/metamodeling/deprecation/metamodels/sigocmponentsMMv1.ecore#//Port"/>
+      <right href="platform:/resource/it.gssi.cs.metamodeling.deprecation/src/it/gssi/cs/metamodeling/deprecation/metamodels/sigocmponentsMMv2.ecore#//Port"/>
+    </submatches>
+    <submatches>
+      <differences xsi:type="compare:ReferenceChange" requiredBy="//@matches.0/@differences.0" kind="DELETE">
+        <reference href="http://www.eclipse.org/emf/2002/Ecore#//EClass/eSuperTypes"/>
+        <value href="platform:/resource/it.gssi.cs.metamodeling.deprecation/src/it/gssi/cs/metamodeling/deprecation/metamodels/sigocmponentsMMv2.ecore#//Port"/>
+      </differences>
+      <right href="platform:/resource/it.gssi.cs.metamodeling.deprecation/src/it/gssi/cs/metamodeling/deprecation/metamodels/sigocmponentsMMv2.ecore#//InPort"/>
+    </submatches>
+    <submatches>
+      <differences xsi:type="compare:ReferenceChange" requiredBy="//@matches.0/@differences.1" kind="DELETE">
+        <reference href="http://www.eclipse.org/emf/2002/Ecore#//EClass/eSuperTypes"/>
+        <value href="platform:/resource/it.gssi.cs.metamodeling.deprecation/src/it/gssi/cs/metamodeling/deprecation/metamodels/sigocmponentsMMv2.ecore#//Port"/>
+      </differences>
+      <right href="platform:/resource/it.gssi.cs.metamodeling.deprecation/src/it/gssi/cs/metamodeling/deprecation/metamodels/sigocmponentsMMv2.ecore#//OutPort"/>
+    </submatches>
+    <differences xsi:type="compare:ReferenceChange" requires="//@matches.0/@submatches.0/@submatches.1/@differences.0 //@matches.0/@submatches.3/@differences.0" kind="DELETE">
+      <reference href="http://www.eclipse.org/emf/2002/Ecore#//EPackage/eClassifiers"/>
+      <value href="platform:/resource/it.gssi.cs.metamodeling.deprecation/src/it/gssi/cs/metamodeling/deprecation/metamodels/sigocmponentsMMv2.ecore#//InPort"/>
+    </differences>
+    <differences xsi:type="compare:ReferenceChange" requires="//@matches.0/@submatches.0/@submatches.2/@differences.0 //@matches.0/@submatches.4/@differences.0" kind="DELETE">
+      <reference href="http://www.eclipse.org/emf/2002/Ecore#//EPackage/eClassifiers"/>
+      <value href="platform:/resource/it.gssi.cs.metamodeling.deprecation/src/it/gssi/cs/metamodeling/deprecation/metamodels/sigocmponentsMMv2.ecore#//OutPort"/>
+    </differences>
+    <differences xsi:type="compare:AttributeChange" kind="CHANGE">
+      <attribute href="http://www.eclipse.org/emf/2002/Ecore#//ENamedElement/name"/>
+    </differences>
+    <differences xsi:type="compare:AttributeChange" kind="CHANGE">
+      <attribute href="http://www.eclipse.org/emf/2002/Ecore#//EPackage/nsURI"/>
+    </differences>
+    <left href="platform:/resource/it.gssi.cs.metamodeling.deprecation/src/it/gssi/cs/metamodeling/deprecation/metamodels/sigocmponentsMMv1.ecore#/"/>
+    <right href="platform:/resource/it.gssi.cs.metamodeling.deprecation/src/it/gssi/cs/metamodeling/deprecation/metamodels/sigocmponentsMMv2.ecore#/"/>
+  </matches>
+</compare:Comparison>

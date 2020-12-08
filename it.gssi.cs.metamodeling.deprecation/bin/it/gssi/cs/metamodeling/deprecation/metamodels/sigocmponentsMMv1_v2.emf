@@ -1,0 +1,44 @@
+@namespace(uri="http://cs.gssi.it/sigcomponenets/v1_v2", prefix="sigcomponenetsv1_v2")
+package sigcomponenetsv1_v2;
+
+class ComponentModel {
+	val sigcomponents_v1.Signature[*] signatures;
+	val sigcomponents_v1.Port[*] ports;
+	val sigcomponents_v2.Signature[*] _signatures;
+	val sigcomponents_v2.Port[*] _ports;
+}
+
+@namespace(uri="http://cs.gssi.it/sigcomp/v1", prefix="sigcomp")
+package sigcomponents_v1 {
+	class Port {
+		attr String _id;
+	}
+
+	class Signature {
+		ref Port[*] inPort;
+		ref Port[*] outPort;
+		attr String _id;
+	}
+
+}
+
+@namespace(uri="v2", prefix="v2")
+package sigcomponents_v2 {
+	class Signature {
+		ref InPort[*] inPort;
+		ref OutPort[*] outPort;
+		attr String _id;
+	}
+
+	abstract class Port {
+		attr String _id;
+	}
+
+	class InPort extends Port {
+	}
+
+	class OutPort extends Port {
+	}
+
+}
+

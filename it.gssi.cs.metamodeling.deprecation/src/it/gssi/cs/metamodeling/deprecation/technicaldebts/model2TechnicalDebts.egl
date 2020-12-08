@@ -1,6 +1,14 @@
 [% import "technicaldebts.eol"; 
 var emfTool : new Native("org.eclipse.epsilon.emc.emf.tools.EmfTool");
 
+var allmc=allMetaclasses();
+var deprecated= allmc.collect(c|c.getDeprecated());
+var nondeprecated = allmc.collect(c|M.allInstances().select(i|i.eClass.sameObj(c)).size() - c.getDeprecated() );
+var numberOfInstances = M.allInstances().size();
+var deprecatedSlots = M.allInstances().collect(i|i.getNrSlotsDeprecatedForInstance());
+var numberOfSlots = M.allInstances().collect(i|i.getNrFilledSlots()).sum();
+var tdratio = ((deprecated.sum() * 100)/ numberOfInstances).round();
+
 %]
 
 <html>
@@ -12,20 +20,6 @@ var emfTool : new Native("org.eclipse.epsilon.emc.emf.tools.EmfTool");
 
 <body>
 
-
-
-
-[%
-var allmc=allMetaclasses();
-//.select(c|M.allInstances().eClass.contains(c)).sortBy(c|c.hasInstances());
-var deprecated= allmc.collect(c|c.getDeprecated());
-var nondeprecated = allmc.collect(c|M.allInstances().select(i|i.eClass.sameObj(c)).size() - c.getDeprecated() );
-var numberOfInstances = M.allInstances().size();
-
-var deprecatedSlots = M.allInstances().collect(i|i.getNrSlotsDeprecatedForInstance());
-var numberOfSlots = M.allInstances().collect(i|i.getNrFilledSlots()).sum();
-var tdratio = ((deprecated.sum() * 100)/ numberOfInstances).round();
-%]
 <div class="row">
 
 <div class="col-md-8">

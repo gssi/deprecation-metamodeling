@@ -2,7 +2,6 @@ var weight_i_deprecated = 1;
 var weight_slot_deprecated = 0.5;
 
 
-
 operation allPackages(): Set{
 var list = new Set;
 var top = M.allInstances().first.eClass.ePackage.getTopPackage();
@@ -37,7 +36,6 @@ operation Any getInstances(): Sequence{
 var c=self;
 return M.allInstances().select(i|i.eClass.sameObj(c));
 }
-
 
 operation Any getDeprecated(): Real{
 
@@ -77,13 +75,13 @@ for (f in c.eAllStructuralFeatures) {
 operation Any getNrSlotsDeprecatedForInstance(): Real{
 	var deprecated_slots=0.0;
 	
-	var i=self;
+	var i = self;
 	var c = self.eClass;
 	for (f in c.eAllStructuralFeatures) { 
-	var deprecated_f=not f.eAnnotations.select(ea|ea.source="deprecated").isEmpty();
+	var deprecated_f = not f.eAnnotations.select(ea|ea.source="deprecated").isEmpty();
 
 			if(deprecated_f and i.eGet(i.eClass().getEStructuralFeature(f.name)).isDefined()){
-		var occurrences = i.eGet(i.eClass().getEStructuralFeature(f.name)).size();
+				var occurrences = i.eGet(i.eClass().getEStructuralFeature(f.name)).size();
 			deprecated_slots = deprecated_slots + occurrences;
 			}		
 		}
