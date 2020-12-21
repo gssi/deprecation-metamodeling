@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: td-validation-examples
+Bundle-SymbolicName: td-validation-examples
+Bundle-Version: 1.0.0.qualifier
+Export-Package: gssi.td.coevolution.examples,
+ gssi.td.coevolution.examples.conferences.metamodels,
+ gssi.td.coevolution.examples.conferences.metamodels.union,
+ gssi.td.coevolution.examples.conferences.models,
+ gssi.td.coevolution.examples.signcomponents.metamodels,
+ gssi.td.coevolution.examples.signcomponents.metamodels.union,
+ gssi.td.coevolution.examples.signcomponents.models,
+ gssi.td.coevolution.examples.tasks,
+ gssi.td.coevolution.examples.tasks.metamodels,
+ gssi.td.coevolution.examples.tasks.metamodels.union
+Require-Bundle: it.gssi.cs.metamodeling.deprecation;bundle-version="0.1.0"
