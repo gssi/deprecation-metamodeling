@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ASCII"?>
+<conference:ConfManager xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:conference="conference.com/v3" xmi:id="_Rs7JQDmrEeu_fuZlWz-bNw">
+  <conferences xmi:id="_W6A5MDmrEeu_fuZlWz-bNw" acronym="ICCSSS 2020" venue="_XRj2gDmrEeu_fuZlWz-bNw" fullname="Computer Science and Service System Conference" date="2023-04-20T00:00:00.000+0200">
+    <submissions xmi:id="_RjZkYDmsEeu_fuZlWz-bNw" authors="_FiqWYDmsEeu_fuZlWz-bNw _F5StsDmsEeu_fuZlWz-bNw _EY6gEDmsEeu_fuZlWz-bNw _FJwuMDmsEeu_fuZlWz-bNw _Ex_HYDmsEeu_fuZlWz-bNw" title="Review of Genetic Algorithms" length="23" reviewers="_IYt9gDmsEeu_fuZlWz-bNw _9Rdr4EPVEeu-0I7y8H3Glw"/>
+    <members xsi:type="conference:Author" xmi:id="_EY6gEDmsEeu_fuZlWz-bNw" name="Jhon Smith" username="jhonsmith"/>
+    <members xsi:type="conference:Author" xmi:id="_Ex_HYDmsEeu_fuZlWz-bNw" name="Patricia Wilson" username="patriciawilson"/>
+    <members xsi:type="conference:Author" xmi:id="_FJwuMDmsEeu_fuZlWz-bNw" name="Joshua Rossi" username="joshuarossi"/>
+    <members xsi:type="conference:Author" xmi:id="_FiqWYDmsEeu_fuZlWz-bNw" name="Ciro Bianchi" username="cirobianchi"/>
+    <members xsi:type="conference:Author" xmi:id="_F5StsDmsEeu_fuZlWz-bNw" name="Gustavo Fring" username="gustavofring"/>
+    <members xsi:type="conference:PcMember" xmi:id="_IYt9gDmsEeu_fuZlWz-bNw" name="Steven Ferguson" username="stevenferguson" type="Ordinary" reviews="_RjZkYDmsEeu_fuZlWz-bNw"/>
+    <members xsi:type="conference:PcMember" xmi:id="_9Rdr4EPVEeu-0I7y8H3Glw" name="James Rodriguez" username="james.rodriguez" type="Ordinary" reviews="_RjZkYDmsEeu_fuZlWz-bNw"/>
+  </conferences>
+  <locations xmi:id="_XRj2gDmrEeu_fuZlWz-bNw" location="University of Madrid" city="Madrid" Country="Spain"/>
+</conference:ConfManager>

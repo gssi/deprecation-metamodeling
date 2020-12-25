@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="ASCII"?>
-<sigcomp:ComponentModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sigcomp="http://cs.gssi.it/sigcomponenets/v1_v2" xmlns:sigcomp_1="sigcomponents_v2" xmi:id="_6Ey9oECKEeu_1s0jV9Oswg">
-  <_signatures xmi:id="_IZ5poEO6EeuITudceOSODw" inPort="_F5PDsEO6EeuITudceOSODw" outPort="_NkeREEO6EeuITudceOSODw _OsV4EEO6EeuITudceOSODw" id="s"/>
-  <_ports xsi:type="sigcomp_1:InPort" xmi:id="_F5PDsEO6EeuITudceOSODw" id="p1"/>
-  <_ports xsi:type="sigcomp_1:OutPort" xmi:id="_NkeREEO6EeuITudceOSODw" id="p2"/>
-  <_ports xsi:type="sigcomp_1:OutPort" xmi:id="_OsV4EEO6EeuITudceOSODw" id="p3"/>
-</sigcomp:ComponentModel>

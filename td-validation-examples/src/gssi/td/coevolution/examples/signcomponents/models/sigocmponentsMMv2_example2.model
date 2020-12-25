@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ASCII"?>
+<sigcomp:ComponentModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sigcomp="http://cs.gssi.it/sigcomp/v2" xmi:id="_CwQ2AEJZEeu7lvhyjXuftQ">
+  <signatures xmi:id="_GPeH0EJZEeu7lvhyjXuftQ" inPort="_SqbMoEJZEeu7lvhyjXuftQ _S7VWcEJZEeu7lvhyjXuftQ _TK6DgEJZEeu7lvhyjXuftQ _TY3nAEJZEeu7lvhyjXuftQ" outPort="_ZXWXoEJZEeu7lvhyjXuftQ _YG6qgEJZEeu7lvhyjXuftQ _YoY_4EJZEeu7lvhyjXuftQ _Y-1xAEJZEeu7lvhyjXuftQ" id="5"/>
+  <ports xsi:type="sigcomp:OutPort" xmi:id="_YG6qgEJZEeu7lvhyjXuftQ" id="G"/>
+  <ports xsi:type="sigcomp:InPort" xmi:id="_SqbMoEJZEeu7lvhyjXuftQ" id="A"/>
+  <ports xsi:type="sigcomp:InPort" xmi:id="_S7VWcEJZEeu7lvhyjXuftQ" id="C"/>
+  <ports xsi:type="sigcomp:InPort" xmi:id="_TK6DgEJZEeu7lvhyjXuftQ" id="F"/>
+  <ports xsi:type="sigcomp:InPort" xmi:id="_TY3nAEJZEeu7lvhyjXuftQ" id="G"/>
+  <ports xsi:type="sigcomp:OutPort" xmi:id="_YoY_4EJZEeu7lvhyjXuftQ" id="B"/>
+  <ports xsi:type="sigcomp:OutPort" xmi:id="_Y-1xAEJZEeu7lvhyjXuftQ" id="C"/>
+  <ports xsi:type="sigcomp:OutPort" xmi:id="_ZXWXoEJZEeu7lvhyjXuftQ" id="D"/>
+  <ports xsi:type="sigcomp:InPort" xmi:id="_kSUQYEJZEeu7lvhyjXuftQ" id="E"/>
+</sigcomp:ComponentModel>
